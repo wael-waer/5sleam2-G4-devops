@@ -8,7 +8,7 @@ target/
 !src/main/java/tn/esprit/spring/DAO/**
 !src/main/java/tn/esprit/spring/Schedular/**
 !src/main/java/tn/esprit/spring/Services/**
-!src/main/java/tn/esprit/spring/Restcontrollers/**
+!src/main/java/tn/esprit/spring/RestControllers/**
 !src/main/java/tn/esprit/spring/Config/**
 !src/main/java/tn/esprit/spring/AOP/**
 
