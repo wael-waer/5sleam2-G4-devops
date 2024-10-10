@@ -1,0 +1,10 @@
+pipeline {
+agent any
+stages {
+stage('Git checkout'){
+steps{
+git 'https://github.com/wael-waer/5sleam2-G4-devops.git'
+}
+}
+}
+}
