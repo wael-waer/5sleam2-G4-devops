@@ -53,5 +53,5 @@ public class ChambreRestController {
     List<Chambre> getChambresNonReserveParNomFoyerEtTypeChambre(@RequestParam String nomFoyer,@RequestParam TypeChambre type){
         return service.getChambresNonReserveParNomFoyerEtTypeChambre(nomFoyer,type);
     }
-//mohameddaoud
+   //mohameddaoud
 }
