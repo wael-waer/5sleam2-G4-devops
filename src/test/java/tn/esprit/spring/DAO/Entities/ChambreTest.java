@@ -78,5 +78,6 @@ public class ChambreTest {
         assertEquals(1, result.size());
         assertEquals("NomFoyer", result.get(0).getBloc().getFoyer().getNomFoyer());
     }
+//mohameddaoud
 }
 

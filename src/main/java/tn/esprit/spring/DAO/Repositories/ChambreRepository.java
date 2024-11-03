@@ -36,4 +36,5 @@ public interface ChambreRepository extends JpaRepository<Chambre, Long> {
 
     long countReservationsByIdChambreAndReservationsEstValideAndReservationsAnneeUniversitaireBetween(long idChambre, boolean estValide, LocalDate dateDebut, LocalDate dateFin);
 //    List<Chambre> findAllByNumeroChambre(List<Long> num);
+//mohameddaoud
 }
