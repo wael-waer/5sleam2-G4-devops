@@ -21,7 +21,7 @@ class EtudiantServiceTest {
     private EtudiantRepository repo;
 
     @InjectMocks
-    private EtudiantService etudiantService;
+    EtudiantService etudiantService;
 
     @BeforeEach
     void setUp() {
