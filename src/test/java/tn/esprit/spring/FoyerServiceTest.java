@@ -1,4 +1,4 @@
-import tn.esprit.spring.Services.Foyer.FoyerService;
+import tn.esprit.spring;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
