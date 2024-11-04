@@ -2,10 +2,7 @@ version: '3.8'
 
 services:
   spring-app:
-    image: your-spring-app-image:latest # Remplacez par l'image de votre application Spring
-    build:
-      context: ./path/to/your/spring/app # Chemin vers votre application Spring
-      dockerfile: Dockerfile # Spécifiez le Dockerfile si nécessaire
+    image: hamaa/my-spring-app-image
     ports:
       - "8080:8080" # Expose le port 8080
     depends_on:
