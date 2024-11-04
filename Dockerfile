@@ -1,11 +1,11 @@
-# Utiliser une image de base Java
+# Utiliser une image de base avec Java
 FROM openjdk:11-jre-slim
 
-# Définir le répertoire de travail
+# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
 # Copier le fichier JAR dans le conteneur
-COPY target/my-spring-app.jar app.jar
+COPY target/Foyer-0.0.1.jar app.jar
 
 # Exposer le port sur lequel l'application écoutera
 EXPOSE 8080
