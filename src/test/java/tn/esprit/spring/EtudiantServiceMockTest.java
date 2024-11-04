@@ -1,3 +1,29 @@
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.Assertions;
+import tn.esprit.spring.Entities.Etudiant; // Replace with the actual package of Etudiant
+import tn.esprit.spring.Repositories.EtudiantRepository; // Replace with the actual package of EtudiantRepository
+import tn.esprit.spring.Services.EtudiantService; // Replace with the actual package of EtudiantService
+
+
+
 @ExtendWith(MockitoExtension.class)
 public class EtudiantServiceMockTest {
 
