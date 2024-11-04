@@ -1,6 +1,6 @@
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class EtudiantServiceTest {
+class MockitoFoyerServiceTest {
 
     private static final Logger logger = LoggerFactory.getLogger(EtudiantServiceTest.class);
 
