@@ -1,77 +1,125 @@
-import tn.esprit.spring;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import tn.esprit.spring.DAO.Entities.Etudiant;
-import tn.esprit.spring.DAO.Repositories.EtudiantRepository;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
+@SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class EtudiantServiceTest {
 
-    @Mock
-    private EtudiantRepository repo;
+    private static final Logger logger = LoggerFactory.getLogger(EtudiantServiceTest.class);
 
-    @InjectMocks
-    EtudiantService etudiantService;
+    private static final String ECOLE_NAME = "ESPRIT"; // Define a constant for "ESPRIT"
+
+    @Autowired
+    private EtudiantRepository etudiantRepository;
+
+    private EtudiantService etudiantService;
+    private Etudiant createdEtudiant; // Variable to hold the created Etudiant for cleanup
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        etudiantService = new EtudiantService(etudiantRepository);
+    }
+
+    @AfterEach // Cleanup after each test
+    void tearDown() {
+        if (createdEtudiant != null) {
+            logger.info("Deleting Etudiant: {}", createdEtudiant);
+            etudiantService.delete(createdEtudiant);
+            createdEtudiant = null; // Reset after deletion
+        }
     }
 
     @Test
     void testAddOrUpdate() {
-        Etudiant etudiant = new Etudiant();
-        etudiant.setId(1L);
-        when(repo.save(etudiant)).thenReturn(etudiant);
+        Etudiant etudiant = Etudiant.builder()
+                .nomEt("Alice")
+                .prenomEt("Smith")
+                .cin(987654321)
+                .ecole(ECOLE_NAME) // Use the constant
+                .dateNaissance(LocalDate.of(2000, 5, 10))
+                .build();
 
-        Etudiant result = etudiantService.addOrUpdate(etudiant);
+        logger.info("Adding or updating Etudiant: {}", etudiant);
+        createdEtudiant = etudiantService.addOrUpdate(etudiant);
 
-        assertEquals(etudiant.getId(), result.getId());
-        verify(repo, times(1)).save(etudiant);
+        Assertions.assertTrue(createdEtudiant.getIdEtudiant() > 0, "ID should be generated and greater than 0");
+        Assertions.assertTrue(createdEtudiant.getNomEt().equals("Alice"), "Nom should be 'Alice'");
     }
 
     @Test
     void testFindAll() {
-        Etudiant etudiant1 = new Etudiant();
-        Etudiant etudiant2 = new Etudiant();
-        List<Etudiant> etudiants = Arrays.asList(etudiant1, etudiant2);
-        when(repo.findAll()).thenReturn(etudiants);
+        Etudiant etudiant1 = Etudiant.builder()
+                .nomEt("Bob")
+                .prenomEt("Brown")
+                .cin(112233445)
+                .ecole(ECOLE_NAME) // Use the constant
+                .dateNaissance(LocalDate.of(2001, 3, 15))
+                .build();
 
-        List<Etudiant> result = etudiantService.findAll();
+        logger.info("Saving Etudiant: {}", etudiant1);
+        createdEtudiant = etudiantRepository.save(etudiant1);
 
-        assertEquals(2, result.size());
-        verify(repo, times(1)).findAll();
+        List<Etudiant> etudiants = etudiantService.findAll();
+        Assertions.assertTrue(etudiants.size() == 1, "There should be one etudiant");
+        Assertions.assertTrue(etudiants.get(0).getNomEt().equals("Bob"), "Nom should be 'Bob'");
     }
 
     @Test
     void testFindById() {
-        Etudiant etudiant = new Etudiant();
-        etudiant.setId(1L);
-        when(repo.findById(1L)).thenReturn(Optional.of(etudiant));
+        Etudiant etudiant = Etudiant.builder()
+                .nomEt("Charlie")
+                .prenomEt("Johnson")
+                .cin(556677889)
+                .ecole(ECOLE_NAME) // Use the constant
+                .dateNaissance(LocalDate.of(1999, 11, 22))
+                .build();
 
-        Etudiant result = etudiantService.findById(1L);
+        logger.info("Saving Etudiant: {}", etudiant);
+        createdEtudiant = etudiantRepository.save(etudiant);
+        Etudiant foundEtudiant = etudiantService.findById(createdEtudiant.getIdEtudiant());
 
-        assertNotNull(result);
-        assertEquals(1L, result.getId());
-        verify(repo, times(1)).findById(1L);
+        Assertions.assertTrue(foundEtudiant != null, "Found etudiant should not be null");
+        Assertions.assertTrue(foundEtudiant.getNomEt().equals("Charlie"), "Nom should be 'Charlie'");
     }
 
     @Test
     void testDeleteById() {
-        long id = 1L;
+        Etudiant etudiant = Etudiant.builder()
+                .nomEt("David")
+                .prenomEt("Wilson")
+                .cin(123456789)
+                .ecole(ECOLE_NAME) // Use the constant
+                .dateNaissance(LocalDate.of(2002, 7, 25))
+                .build();
 
-        etudiantService.deleteById(id);
+        logger.info("Saving Etudiant for deletion test: {}", etudiant);
+        createdEtudiant = etudiantRepository.save(etudiant);
 
-        verify(repo, times(1)).deleteById(id);
+        logger.info("Deleting Etudiant with ID: {}", createdEtudiant.getIdEtudiant());
+        etudiantService.deleteById(createdEtudiant.getIdEtudiant());
+
+        // Verify that the Etudiant was deleted
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            etudiantService.findById(createdEtudiant.getIdEtudiant());
+        });
+    }
+
+    @Test
+    void testDelete() {
+        Etudiant etudiant = Etudiant.builder()
+                .nomEt("Emma")
+                .prenomEt("Davis")
+                .cin(998877665)
+                .ecole(ECOLE_NAME) // Use the constant
+                .dateNaissance(LocalDate.of(1998, 12, 30))
+                .build();
+
+        logger.info("Saving Etudiant for deletion test: {}", etudiant);
+        createdEtudiant = etudiantRepository.save(etudiant);
+
+        logger.info("Deleting Etudiant: {}", createdEtudiant);
+        etudiantService.delete(createdEtudiant);
+
+        // Verify that the Etudiant was deleted
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            etudiantService.findById(createdEtudiant.getIdEtudiant());
+        });
     }
 }
