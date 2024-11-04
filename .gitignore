@@ -1,3 +1,4 @@
+
 # Ignore everything in target directories
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -32,3 +33,30 @@ target/
 
 # NetBeans
 /nbproject/private/
+=======
+src/main/java/tn/esprit/spring/DAO/Entities/Bloc.java
+src/main/java/tn/esprit/spring/DAO/Entities/Chambre.java
+src/main/java/tn/esprit/spring/DAO/Entities/Etudiant.java
+src/main/java/tn/esprit/spring/DAO/Entities/Reservation.java
+src/main/java/tn/esprit/spring/DAO/Entities/TypeChambre.java
+src/main/java/tn/esprit/spring/DAO/Entities/Universite.java
+
+src/main/java/tn/esprit/spring/DAO/Repositories/BlocRepository.java
+src/main/java/tn/esprit/spring/DAO/Repositories/ChambreRepository.java
+src/main/java/tn/esprit/spring/DAO/Repositories/EtudiantRepository.java
+src/main/java/tn/esprit/spring/DAO/Repositories/ReservationRepository.java
+src/main/java/tn/esprit/spring/DAO/Repositories/UniversiteRepository.java
+
+
+src/main/java/tn/esprit/spring/RestControllers/BlocRestController.java
+src/main/java/tn/esprit/spring/RestControllers/ChambreRestController.java
+src/main/java/tn/esprit/spring/RestControllers/EtudiantRestController.java
+src/main/java/tn/esprit/spring/RestControllers/ReservationRestController.java
+src/main/java/tn/esprit/spring/RestControllers/UniversiteRestController.java
+
+src/main/java/tn/esprit/spring/Services/Bloc
+src/main/java/tn/esprit/spring/Services/Chambre
+src/main/java/tn/esprit/spring/Services/Etudiant
+src/main/java/tn/esprit/spring/Services/Reservation
+src/main/java/tn/esprit/spring/Services/Universite
+
