@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  spring-app:
+    image: your-spring-app-image:latest # Remplacez par l'image de votre application Spring
+    build:
+      context: ./path/to/your/spring/app # Chemin vers votre application Spring
+      dockerfile: Dockerfile # Spécifiez le Dockerfile si nécessaire
+    ports:
+      - "8080:8080" # Expose le port 8080
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/Foyer
+      SPRING_DATASOURCE_USERNAME: hama
+      SPRING_DATASOURCE_PASSWORD: esprit
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: esprit # Mot de passe pour l'utilisateur root
+      MYSQL_DATABASE: Foyer # Nom de la base de données à créer
+      MYSQL_USER: hama # Nom d'utilisateur à créer
+      MYSQL_PASSWORD: esprit # Mot de passe pour l'utilisateur
+    ports:
+      - "3306:3306" # Expose le port 3306
+
+networks:
+  default:
+    driver: bridge
