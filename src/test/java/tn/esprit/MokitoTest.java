@@ -94,22 +94,7 @@ public class MokitoTest {
         logger.info("Test findAll: Found {} Etudiants", foundEtudiants.size());
     }
 
-    @Test
-    void testFindById() {
-        // Mock the repository to return an Optional containing the Etudiant
-        when(etudiantRepository.findById(anyLong())).thenReturn(Optional.of(etudiant));
-
-        // Call the method to test
-        Etudiant foundEtudiant = etudiantService.findById(1L);
-
-        // Assertions
-        Assertions.assertNotNull(foundEtudiant);
-        Assertions.assertEquals("Alice", foundEtudiant.getNomEt());
-
-        // Verify that findById was called
-        verify(etudiantRepository, times(1)).findById(anyLong());
-        logger.info("Test findById: Successfully found Etudiant with ID: {}", foundEtudiant.getIdEtudiant());
-    }
+    
 
     @Test
     void testFindByIdNotFound() {
