@@ -105,7 +105,6 @@ public class ReservationServiceMockitoTest {
         Etudiant etudiant = new Etudiant();
         etudiant.setCin(cin);
 
-        // Mocking the repositories
         when(chambreRepository.findByNumeroChambre(numChambre)).thenReturn(chambre);
         when(etudiantRepository.findByCin(cin)).thenReturn(etudiant);
         when(reservationRepository.save(any(Reservation.class))).thenAnswer(i -> i.getArguments()[0]); // Mocking the save operation to return the reservation

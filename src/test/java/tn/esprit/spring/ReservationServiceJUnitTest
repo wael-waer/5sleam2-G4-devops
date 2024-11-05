@@ -18,7 +18,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional // This will roll back the database changes after each test
+@Transactional 
 public class ReservationServiceJUnitTest {
 
     @Autowired
@@ -35,17 +35,14 @@ public class ReservationServiceJUnitTest {
 
     @BeforeEach
     public void setUp() {
-        // Clear any existing data
         reservationRepository.deleteAll();
         chambreRepository.deleteAll();
         etudiantRepository.deleteAll();
 
-        // Create and save a Chambre
         chambre = new Chambre();
         chambre.setTypeC(TypeChambre.SIMPLE);
         chambre = chambreRepository.save(chambre);
 
-        // Create and save an Etudiant
         etudiant = new Etudiant();
         etudiant.setCin(123456);
         etudiant = etudiantRepository.save(etudiant);
@@ -64,7 +61,6 @@ public class ReservationServiceJUnitTest {
 
     @Test
     public void testFindAll() {
-        // Add a reservation first
         Reservation reservation = new Reservation();
         reservation.setIdReservation("1L");
         reservation.setEstValide(true);
@@ -133,7 +129,7 @@ public class ReservationServiceJUnitTest {
         assertNotNull(savedEtudiant, "Etudiant should be saved successfully.");
 
         Reservation reservation = new Reservation();
-        reservation.setIdReservation(UUID.randomUUID().toString()); // Ensure a valid ID is set here too
+        reservation.setIdReservation(UUID.randomUUID().toString()); 
         reservation.setChambre(chambre);
 
         Reservation saveRes = reservationRepository.save(reservation);
@@ -141,8 +137,8 @@ public class ReservationServiceJUnitTest {
         assertNotNull(saveRes, "Reservation should be saved successfully.");
 
         saveRes.getEtudiants().add(etudiant);
-        saveRes.setEstValide(true); // Assuming you want the reservation to be valid
-        reservationService.addOrUpdate(saveRes); // Ensure you're calling the method that saves it.
+        saveRes.setEstValide(true);
+        reservationService.addOrUpdate(saveRes); 
 
 
         assertEquals(savedChambre.getNumeroChambre(), saveRes.getChambre().getNumeroChambre(), "The room IDs should match.");
