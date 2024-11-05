@@ -108,7 +108,7 @@ public class MokitoTest {
 
         // Verify that findById was called
         verify(etudiantRepository, times(1)).findById(anyLong());
-        logger.info("Test findById: Successfully found Etudiant with ID: {}", foundEtudiant.getIdEtudiant());
+        logger.info("Test findByIdNotFound: Expected EntityNotFoundException was thrown.");
     }
 
     @Test
