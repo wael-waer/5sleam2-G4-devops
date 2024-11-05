@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
-class JunitFoyerServiceTest {
+class FoyerServiceTest {
 
     private static final Logger logger = LoggerFactory.getLogger(JunitFoyerServiceTest.class);
 

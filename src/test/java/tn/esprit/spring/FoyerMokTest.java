@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ExtendWith(MockitoExtension.class)
-class MockitoFoyerServiceTest {
+class FoyerServiceTest {
 
     private static final Logger logger = LoggerFactory.getLogger(MockitoFoyerServiceTest.class);
 

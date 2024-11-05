@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class EtudiantServiceMockTest {
+public class EtudiantMockTest {
 
     private static final Logger logger = LoggerFactory.getLogger(EtudiantServiceMockTest.class);
 
