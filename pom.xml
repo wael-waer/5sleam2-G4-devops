@@ -38,8 +38,9 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId> <!-- Corrected groupId -->
+            <groupId>mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
+            <version>8.0.33</version> <!-- Specified version -->
             <scope>runtime</scope>
         </dependency>
         <dependency>
