@@ -2,7 +2,6 @@ package tn.esprit.spring.DAO.Repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import tn.esprit.spring.DAO.Entities.Bloc;
 import tn.esprit.spring.DAO.Entities.Chambre;
 import tn.esprit.spring.DAO.Entities.TypeChambre;
 
@@ -16,8 +15,7 @@ public interface ChambreRepository extends JpaRepository<Chambre, Long> {
 
     int countByTypeCAndBlocIdBloc(TypeChambre typeChambre, long idBloc);
 
-    //********************* Ajouter Reservation *********************
-    //SQL
+
     @Query(value = "select count(*) from t_chambre c " +
             "join t_chambre_reservations cr on c.id_chambre=cr.chambre_id_chambre " +
             "join t_reservation r on cr.reservations_id_reservation=r.id_reservation " +
