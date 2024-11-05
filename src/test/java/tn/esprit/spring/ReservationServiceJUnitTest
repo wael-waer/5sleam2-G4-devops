@@ -1,0 +1,162 @@
+package tn.esprit.spring;
+
+import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import tn.esprit.spring.DAO.Entities.*;
+import tn.esprit.spring.DAO.Repositories.ChambreRepository;
+import tn.esprit.spring.DAO.Repositories.EtudiantRepository;
+import tn.esprit.spring.DAO.Repositories.ReservationRepository;
+import tn.esprit.spring.Services.Reservation.ReservationService;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+@Transactional // This will roll back the database changes after each test
+public class ReservationServiceJUnitTest {
+
+    @Autowired
+    private ReservationService reservationService;
+    @Autowired
+    private ReservationRepository reservationRepository;
+    @Autowired
+    private ChambreRepository chambreRepository;
+    @Autowired
+    private EtudiantRepository etudiantRepository;
+
+    private Chambre chambre;
+    private Etudiant etudiant;
+
+    @BeforeEach
+    public void setUp() {
+        // Clear any existing data
+        reservationRepository.deleteAll();
+        chambreRepository.deleteAll();
+        etudiantRepository.deleteAll();
+
+        // Create and save a Chambre
+        chambre = new Chambre();
+        chambre.setTypeC(TypeChambre.SIMPLE);
+        chambre = chambreRepository.save(chambre);
+
+        // Create and save an Etudiant
+        etudiant = new Etudiant();
+        etudiant.setCin(123456);
+        etudiant = etudiantRepository.save(etudiant);
+    }
+
+    @Test
+    public void testAddOrUpdate() {
+        Reservation reservation = new Reservation();
+        reservation.setIdReservation(UUID.randomUUID().toString());
+        reservation.setEstValide(true);
+        reservation.setChambre(chambre);
+
+        reservationService.addOrUpdate(reservation);
+
+    }
+
+    @Test
+    public void testFindAll() {
+        // Add a reservation first
+        Reservation reservation = new Reservation();
+        reservation.setIdReservation("1L");
+        reservation.setEstValide(true);
+        reservation.setChambre(chambre);
+        reservationService.addOrUpdate(reservation);
+
+        List<Reservation> result = reservationService.findAll();
+    }
+
+    @Test
+    public void testFindById() {
+        Reservation reservation = new Reservation();
+        reservation.setIdReservation(UUID.randomUUID().toString());
+        reservation.setEstValide(true);
+        chambre.setNumeroChambre(UUID.randomUUID().getMostSignificantBits());
+        reservation.setChambre(chambre);
+
+        Reservation saved = reservationRepository.save(reservation);
+
+        Optional<Reservation> foundOP = reservationRepository.findById(saved.getIdReservation());
+
+        assertTrue(foundOP.isPresent());
+
+        Reservation found = foundOP.get();
+        assertNotNull(saved);
+
+
+        assertNotNull(found);
+        assertEquals(saved.getIdReservation(),found.getIdReservation());
+    }
+
+    @Test
+    public void testDeleteById() {
+        Reservation reservation = new Reservation();
+        reservation.setIdReservation(UUID.randomUUID().toString());
+        reservation.setEstValide(true);
+        reservation.setChambre(chambre);
+        reservationService.deleteById(reservation.getIdReservation());
+
+    }
+
+    @Test
+    public void testAjouterReservationEtAssignerAChambreEtAEtudiant() {
+
+        long cin = 123456;
+
+        UUID uuid = UUID.randomUUID();
+        Bloc bloc = new Bloc();
+        bloc.setNomBloc("Bloc A");
+        bloc.setIdBloc(1);
+
+        Chambre chambre = new Chambre();
+        chambre.setNumeroChambre(uuid.getMostSignificantBits());
+        chambre.setIdChambre(uuid.getMostSignificantBits());
+        chambre.setTypeC(TypeChambre.SIMPLE);
+        chambre.setBloc(bloc);
+        Chambre savedChambre = chambreRepository.save(chambre);
+
+        assertNotNull(savedChambre, "Chambre should be saved successfully.");
+
+        Etudiant etudiant = new Etudiant();
+        etudiant.setCin(cin);
+        Etudiant savedEtudiant = etudiantRepository.save(etudiant);
+
+
+        assertNotNull(savedEtudiant, "Etudiant should be saved successfully.");
+
+        Reservation reservation = new Reservation();
+        reservation.setIdReservation(UUID.randomUUID().toString()); // Ensure a valid ID is set here too
+        reservation.setChambre(chambre);
+
+        Reservation saveRes = reservationRepository.save(reservation);
+
+        assertNotNull(saveRes, "Reservation should be saved successfully.");
+
+        saveRes.getEtudiants().add(etudiant);
+        saveRes.setEstValide(true); // Assuming you want the reservation to be valid
+        reservationService.addOrUpdate(saveRes); // Ensure you're calling the method that saves it.
+
+
+        assertEquals(savedChambre.getNumeroChambre(), saveRes.getChambre().getNumeroChambre(), "The room IDs should match.");
+        assertTrue(saveRes.getEtudiants().stream().anyMatch(e -> e.getCin() == cin), "The CIN should match.");
+    }
+
+    @Test
+    public void testAnnulerReservation() {
+        Reservation reservation = new Reservation();
+        reservation.setIdReservation(UUID.randomUUID().toString());
+        reservation.setEstValide(true);
+        reservation.setChambre(chambre);
+
+        reservationService.annulerReservations();
+
+    }
+}
