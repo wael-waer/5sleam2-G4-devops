@@ -1,4 +1,4 @@
-package tn.esprit.spring.Services.Foyer;
+package tn.esprit.spring;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
