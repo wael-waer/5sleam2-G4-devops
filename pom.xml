@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -19,7 +20,7 @@
     <properties>
         <java.version>17</java.version>
         <sonar.projectKey>pipeline1</sonar.projectKey>
-        <sonar.host.url>http://http://192.168.33.10:9000/</sonar.host.url>
+        <sonar.host.url>http://192.168.33.10:9000/</sonar.host.url> <!-- Corrected URL -->
         <sonar.login>jenkins</sonar.login>
         <sonar.sources>src/main/java</sonar.sources>
         <sonar.tests>src/test/java</sonar.tests>
@@ -37,7 +38,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.mysql</groupId>
+            <groupId>mysql</groupId> <!-- Corrected groupId -->
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -59,13 +60,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.7.0</version>
+            <version>5.9.3</version> <!-- Updated version -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.6.0</version>
+            <version>5.3.1</version> <!-- Updated version -->
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -80,6 +81,26 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id> <!-- Changed id for clarity -->
+            <url>http://192.168.33.10:8081/repository/Foyer/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <url>http://192.168.33.10:8081/repository/Foyer/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
         <plugins>
@@ -98,16 +119,16 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version> <!-- updated to the version from the first POM -->
+                <version>0.8.7</version>
                 <executions>
                     <execution>
+                        <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
