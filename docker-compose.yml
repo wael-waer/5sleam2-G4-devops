@@ -1,34 +1,6 @@
 version: '3'
 
 services:
-  db:
-    image: mysql:5.7
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: sonar
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: medslah2000
-    volumes:
-      - db_data:/var/lib/mysql
-    ports:
-      - "3306:3306"
-
-  sonarqube:
-    image: sonarqube:latest
-    ports:
-      - "9000:9000"
-    volumes:
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_extensions:/opt/sonarqube/extensions
-      - sonarqube_bundled-plugins:/opt/sonarqube/bundled-plugins
-    environment:
-      - SONAR_JDBC_URL=jdbc:mysql://db:3306/sonar?useSSL=false
-      - SONAR_JDBC_USERNAME=admin
-      - SONAR_JDBC_PASSWORD=medslah2000
-    depends_on:
-      - db
-
   nexus:
     image: sonatype/nexus3
     ports:
@@ -37,8 +9,4 @@ services:
       - nexus_data:/nexus-data
 
 volumes:
-  sonarqube_data:
-  sonarqube_extensions:
-  sonarqube_bundled-plugins:
   nexus_data:
-  db_data:
