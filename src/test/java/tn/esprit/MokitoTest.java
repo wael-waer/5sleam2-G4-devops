@@ -116,10 +116,11 @@ public class MokitoTest {
         // Mock the repository to return an empty Optional
         when(etudiantRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        // Call the method to test and assert that it throws an EntityNotFoundException
-        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> {
             etudiantService.findById(1L);
         });
+        // Call the method to test and assert that it throws an EntityNotFoundException
+        Assertions.assertEquals("Etudiant not found with ID: 1", exception.getMessage());
 
         // Verify that findById was called
         verify(etudiantRepository, times(1)).findById(anyLong());
