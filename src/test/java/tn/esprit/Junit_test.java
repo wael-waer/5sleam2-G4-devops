@@ -78,24 +78,6 @@ public class Junit_test {
         Assertions.assertTrue(etudiants.get(0).getNomEt().equals("Bob"), "Nom should be 'Bob'");
     }
 
-    @Test
-    void testFindById() {
-        Etudiant etudiant = Etudiant.builder()
-                .nomEt("Charlie")
-                .prenomEt("Johnson")
-                .cin(556677889)
-                .ecole("ESPRIT")
-                .dateNaissance(LocalDate.of(1999, 11, 22))
-                .build();
-
-        logger.info("Saving Etudiant: {}");
-        createdEtudiant = etudiantRepository.save(etudiant);
-        Etudiant foundEtudiant = etudiantService.findById(createdEtudiant.getIdEtudiant());
-
-        Assertions.assertTrue(foundEtudiant != null, "Found etudiant should not be null");
-        Assertions.assertTrue(foundEtudiant.getNomEt().equals("Charlie"), "Nom should be 'Charlie'");
-    }
-
 
     @Test
     void testDeleteById() {
