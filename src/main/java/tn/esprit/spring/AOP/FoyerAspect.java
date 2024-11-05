@@ -9,12 +9,10 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
-//La classe : Aspect
 @Component
 @Aspect
 @Slf4j
 public class FoyerAspect {
-    //Méthode: Advice
     @Before("execution(* tn.esprit.spring.Services..*.*(..))")
     public void method(JoinPoint jp){
         log.info("hello "+jp.getSignature().getName());
