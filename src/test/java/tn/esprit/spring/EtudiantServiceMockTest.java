@@ -1,35 +1,34 @@
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.junit.jupiter.api.Assertions;
-import tn.esprit.spring.Entities.Etudiant; // Replace with the actual package of Etudiant
-import tn.esprit.spring.Repositories.EtudiantRepository; // Replace with the actual package of EtudiantRepository
-import tn.esprit.spring.Services.EtudiantService; // Replace with the actual package of EtudiantService
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
+import tn.esprit.spring.Entities.Etudiant; // Ensure this matches the actual package
+import tn.esprit.spring.Repositories.EtudiantRepository; // Ensure this matches the actual package
+import tn.esprit.spring.Services.EtudiantService; // Ensure this matches the actual package
 
 @ExtendWith(MockitoExtension.class)
 public class EtudiantServiceMockTest {
 
     private static final Logger logger = LoggerFactory.getLogger(EtudiantServiceMockTest.class);
-
-    private static final String TEST_NAME = "Alice"; // Define a constant for the name "Alice"
+    private static final String TEST_NAME = "Alice";
 
     @Mock
     private EtudiantRepository etudiantRepository;
@@ -41,9 +40,8 @@ public class EtudiantServiceMockTest {
 
     @BeforeEach
     void setUp() {
-        // Create a new Etudiant instance for testing
         etudiant = Etudiant.builder()
-                .idEtudiant(1L) // Set a sample ID for testing purposes
+                .idEtudiant(1L)
                 .nomEt(TEST_NAME)
                 .prenomEt("Smith")
                 .cin(987654321)
@@ -55,59 +53,44 @@ public class EtudiantServiceMockTest {
 
     @Test
     void testAddOrUpdate() {
-        // Mock the repository to return an Etudiant with an ID
         when(etudiantRepository.save(any(Etudiant.class))).thenReturn(etudiant);
 
-        // Call the method to test
         Etudiant createdEtudiant = etudiantService.addOrUpdate(etudiant);
 
-        // Assertions
-        Assertions.assertNotNull(createdEtudiant);
-        Assertions.assertEquals(TEST_NAME, createdEtudiant.getNomEt()); // Use the constant
+        assertNotNull(createdEtudiant);
+        assertEquals(TEST_NAME, createdEtudiant.getNomEt());
 
-        // Verify that the save method was called
         verify(etudiantRepository, times(1)).save(any(Etudiant.class));
         logger.info("Test addOrUpdate: Successfully added or updated Etudiant: {}", createdEtudiant);
     }
 
     @Test
     void testFindAll() {
-        // Create a list of Etudiant for testing
         List<Etudiant> etudiants = new ArrayList<>();
         etudiants.add(etudiant);
 
-        // Mock the repository to return the list
         when(etudiantRepository.findAll()).thenReturn(etudiants);
 
-        // Call the method to test
         List<Etudiant> foundEtudiants = etudiantService.findAll();
 
-        // Assertions
-        Assertions.assertNotNull(foundEtudiants);
-        Assertions.assertEquals(1, foundEtudiants.size());
-        Assertions.assertEquals(TEST_NAME, foundEtudiants.get(0).getNomEt()); // Use the constant
+        assertNotNull(foundEtudiants);
+        assertEquals(1, foundEtudiants.size());
+        assertEquals(TEST_NAME, foundEtudiants.get(0).getNomEt());
 
-        // Verify that findAll was called
         verify(etudiantRepository, times(1)).findAll();
         logger.info("Test findAll: Found {} Etudiants", foundEtudiants.size());
     }
 
     @Test
     void testFindById() {
-        // Mock the repository to return an Optional containing the Etudiant
         when(etudiantRepository.findById(anyLong())).thenReturn(Optional.of(etudiant));
 
-        // Call the method to test
         Etudiant foundEtudiant = etudiantService.findById(1L);
 
-        // Assertions
-        Assertions.assertNotNull(foundEtudiant);
-        Assertions.assertEquals(TEST_NAME, foundEtudiant.getNomEt()); // Use the constant
+        assertNotNull(foundEtudiant);
+        assertEquals(TEST_NAME, foundEtudiant.getNomEt());
 
-        // Verify that findById was called
         verify(etudiantRepository, times(1)).findById(anyLong());
         logger.info("Test findById: Successfully found Etudiant with ID: {}", foundEtudiant.getIdEtudiant());
     }
-
-    // Other tests remain unchanged
 }

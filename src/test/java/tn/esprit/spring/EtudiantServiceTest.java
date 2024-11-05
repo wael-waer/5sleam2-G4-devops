@@ -1,50 +1,50 @@
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestMethodOrder;
+
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import org.junit.jupiter.api.Assertions;
-import tn.esprit.spring.Entities.Etudiant; // Replace with the actual package of Etudiant
-import tn.esprit.spring.Repositories.EtudiantRepository; // Replace with the actual package of EtudiantRepository
-import tn.esprit.spring.Services.EtudiantService; // Replace with the actual package of EtudiantService
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
+import tn.esprit.spring.Entities.Etudiant; // Ensure this matches the actual package
+import tn.esprit.spring.Repositories.EtudiantRepository; // Ensure this matches the actual package
+import tn.esprit.spring.Services.EtudiantService; // Ensure this matches the actual package
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class EtudiantServiceTest {
 
     private static final Logger logger = LoggerFactory.getLogger(EtudiantServiceTest.class);
-
-    private static final String ECOLE_NAME = "ESPRIT"; // Define a constant for "ESPRIT"
+    private static final String ECOLE_NAME = "ESPRIT";
 
     @Autowired
     private EtudiantRepository etudiantRepository;
 
+    @InjectMocks
     private EtudiantService etudiantService;
-    private Etudiant createdEtudiant; // Variable to hold the created Etudiant for cleanup
+
+    private Etudiant createdEtudiant;
 
     @BeforeEach
     void setUp() {
-        etudiantService = new EtudiantService(etudiantRepository);
+        // Here, you can perform any necessary setup for the tests.
     }
 
-    @AfterEach // Cleanup after each test
+    @AfterEach
     void tearDown() {
         if (createdEtudiant != null) {
             logger.info("Deleting Etudiant: {}", createdEtudiant);
@@ -59,15 +59,15 @@ class EtudiantServiceTest {
                 .nomEt("Alice")
                 .prenomEt("Smith")
                 .cin(987654321)
-                .ecole(ECOLE_NAME) // Use the constant
+                .ecole(ECOLE_NAME)
                 .dateNaissance(LocalDate.of(2000, 5, 10))
                 .build();
 
         logger.info("Adding or updating Etudiant: {}", etudiant);
         createdEtudiant = etudiantService.addOrUpdate(etudiant);
 
-        Assertions.assertTrue(createdEtudiant.getIdEtudiant() > 0, "ID should be generated and greater than 0");
-        Assertions.assertTrue(createdEtudiant.getNomEt().equals("Alice"), "Nom should be 'Alice'");
+        assertTrue(createdEtudiant.getIdEtudiant() > 0, "ID should be generated and greater than 0");
+        assertEquals("Alice", createdEtudiant.getNomEt(), "Nom should be 'Alice'");
     }
 
     @Test
@@ -76,7 +76,7 @@ class EtudiantServiceTest {
                 .nomEt("Bob")
                 .prenomEt("Brown")
                 .cin(112233445)
-                .ecole(ECOLE_NAME) // Use the constant
+                .ecole(ECOLE_NAME)
                 .dateNaissance(LocalDate.of(2001, 3, 15))
                 .build();
 
@@ -84,8 +84,8 @@ class EtudiantServiceTest {
         createdEtudiant = etudiantRepository.save(etudiant1);
 
         List<Etudiant> etudiants = etudiantService.findAll();
-        Assertions.assertTrue(etudiants.size() == 1, "There should be one etudiant");
-        Assertions.assertTrue(etudiants.get(0).getNomEt().equals("Bob"), "Nom should be 'Bob'");
+        assertEquals(1, etudiants.size(), "There should be one etudiant");
+        assertEquals("Bob", etudiants.get(0).getNomEt(), "Nom should be 'Bob'");
     }
 
     @Test
@@ -94,7 +94,7 @@ class EtudiantServiceTest {
                 .nomEt("Charlie")
                 .prenomEt("Johnson")
                 .cin(556677889)
-                .ecole(ECOLE_NAME) // Use the constant
+                .ecole(ECOLE_NAME)
                 .dateNaissance(LocalDate.of(1999, 11, 22))
                 .build();
 
@@ -102,8 +102,8 @@ class EtudiantServiceTest {
         createdEtudiant = etudiantRepository.save(etudiant);
         Etudiant foundEtudiant = etudiantService.findById(createdEtudiant.getIdEtudiant());
 
-        Assertions.assertTrue(foundEtudiant != null, "Found etudiant should not be null");
-        Assertions.assertTrue(foundEtudiant.getNomEt().equals("Charlie"), "Nom should be 'Charlie'");
+        assertNotNull(foundEtudiant, "Found etudiant should not be null");
+        assertEquals("Charlie", foundEtudiant.getNomEt(), "Nom should be 'Charlie'");
     }
 
     @Test
@@ -112,7 +112,7 @@ class EtudiantServiceTest {
                 .nomEt("David")
                 .prenomEt("Wilson")
                 .cin(123456789)
-                .ecole(ECOLE_NAME) // Use the constant
+                .ecole(ECOLE_NAME)
                 .dateNaissance(LocalDate.of(2002, 7, 25))
                 .build();
 
@@ -123,7 +123,7 @@ class EtudiantServiceTest {
         etudiantService.deleteById(createdEtudiant.getIdEtudiant());
 
         // Verify that the Etudiant was deleted
-        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             etudiantService.findById(createdEtudiant.getIdEtudiant());
         });
     }
@@ -134,7 +134,7 @@ class EtudiantServiceTest {
                 .nomEt("Emma")
                 .prenomEt("Davis")
                 .cin(998877665)
-                .ecole(ECOLE_NAME) // Use the constant
+                .ecole(ECOLE_NAME)
                 .dateNaissance(LocalDate.of(1998, 12, 30))
                 .build();
 
@@ -145,7 +145,7 @@ class EtudiantServiceTest {
         etudiantService.delete(createdEtudiant);
 
         // Verify that the Etudiant was deleted
-        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             etudiantService.findById(createdEtudiant.getIdEtudiant());
         });
     }
