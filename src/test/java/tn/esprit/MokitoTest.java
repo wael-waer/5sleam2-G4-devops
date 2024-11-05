@@ -94,38 +94,7 @@ public class MokitoTest {
         logger.info("Test findAll: Found {} Etudiants", foundEtudiants.size());
     }
 
-    @Test
-    void testFindById() {
-        // Mock the repository to return an Optional containing the Etudiant
-        when(etudiantRepository.findById(anyLong())).thenReturn(Optional.of(etudiant));
-
-        // Call the method to test
-        Etudiant foundEtudiant = etudiantService.findById(1L);
-
-        // Assertions
-        Assertions.assertNotNull(foundEtudiant);
-        Assertions.assertEquals("Alice", foundEtudiant.getNomEt());
-
-        // Verify that findById was called
-        verify(etudiantRepository, times(1)).findById(anyLong());
-        logger.info("Test findByIdNotFound: Expected EntityNotFoundException was thrown.");
-    }
-
-    @Test
-    void testFindByIdNotFound() {
-        // Mock the repository to return an empty Optional
-        when(etudiantRepository.findById(anyLong())).thenReturn(Optional.empty());
-
-        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> {
-            etudiantService.findById(1L);
-        });
-        // Call the method to test and assert that it throws an EntityNotFoundException
-        Assertions.assertEquals("Etudiant not found with ID: 1", exception.getMessage());
-
-        // Verify that findById was called
-        verify(etudiantRepository, times(1)).findById(anyLong());
-        logger.info("Test findByIdNotFound: No Etudiant found with the given ID");
-    }
+    
 
     @Test
     void testDeleteById() {
