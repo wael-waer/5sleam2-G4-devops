@@ -9,75 +9,34 @@
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>17</java.version> <!-- Update to your desired Java version -->
-        <spring.boot.version>2.7.5</spring.boot.version> <!-- Ensure this matches your Spring Boot version -->
+        <java.version>17</java.version> <!-- Set your Java version -->
+        <spring.boot.version>3.1.0</spring.boot.version> <!-- Update to your desired Spring Boot version -->
     </properties>
 
     <dependencies>
-        <!-- Spring Boot Starter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <version>${spring.boot.version}</version>
         </dependency>
-
-        <!-- Spring Boot Starter Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- JUnit Jupiter API -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.8.2</version>
+            <version>${spring.boot.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- JUnit Jupiter Engine -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Mockito -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>4.0.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- SLF4J for logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.36</version>
-        </dependency>
-
-        <!-- Spring Boot Starter Data JPA (if you are using JPA) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${spring.boot.version}</version>
         </dependency>
-
-        <!-- H2 Database for in-memory testing (optional) -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>test</scope>
+            <version>2.1.214</version> <!-- Use the latest stable version -->
+            <scope>runtime</scope>
         </dependency>
-
-        <!-- Add other dependencies as needed -->
+        <!-- Add any other dependencies here -->
     </dependencies>
 
     <build>
@@ -85,8 +44,8 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
             </plugin>
         </plugins>
     </build>
-
 </project>
